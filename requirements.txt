@@ -1,0 +1,9 @@
+flet
+polars
+pydantic
+rich
+icecream
+ruff
+pytest
+pydantic[email]
+streamlit
