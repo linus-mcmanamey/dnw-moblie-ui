@@ -1,9 +1,11 @@
-flet
 polars
 pydantic
 rich
 icecream
+loguru
 ruff
 pytest
 pydantic[email]
-streamlit
+clickhouse-connect
+reflex
+sqlmodel
