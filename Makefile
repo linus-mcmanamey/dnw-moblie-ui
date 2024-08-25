@@ -15,4 +15,7 @@ install_requirements:
 	pip install -r requirements.txt
 
 venv:
-	source .venv/bin/activate
+	sudo source .venv/bin/activate
+
+run:
+	reflex run --loglevel debug

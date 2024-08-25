@@ -20,13 +20,13 @@ def navbar_user() -> rx.Component:
                     rx.heading(
                         "Reflex", size="7", weight="bold"
                     ),
-                    align_items="center",
+                    align_items="right",
                 ),
                 rx.hstack(
                     navbar_link("Home", "/#"),
-                    navbar_link("About", "/#"),
-                    navbar_link("Pricing", "/#"),
-                    navbar_link("Contact", "/#"),
+                    navbar_link("Connection", "/#"),
+                    navbar_link("Train", "/#"),
+                    navbar_link("Stats", "/#"),
                     spacing="5",
                 ),
                 rx.menu.root(
@@ -38,8 +38,11 @@ def navbar_user() -> rx.Component:
                         )
                     ),
                     rx.menu.content(
+                        rx.menu.item("Home"),
+                        rx.menu.item("Connection"),
+                        rx.menu.item("Train"),
+                        rx.menu.item("Stats"),
                         rx.menu.item("Settings"),
-                        rx.menu.item("Earnings"),
                         rx.menu.separator(),
                         rx.menu.item("Log out"),
                     ),
@@ -61,7 +64,7 @@ def navbar_user() -> rx.Component:
                     rx.heading(
                         "Reflex", size="6", weight="bold"
                     ),
-                    align_items="center",
+                    align_items="right",
                 ),
                 rx.menu.root(
                     rx.menu.trigger(
@@ -72,8 +75,11 @@ def navbar_user() -> rx.Component:
                         )
                     ),
                     rx.menu.content(
+                        rx.menu.item("Home"),
+                        rx.menu.item("Connection"),
+                        rx.menu.item("Train"),
+                        rx.menu.item("Stats"),
                         rx.menu.item("Settings"),
-                        rx.menu.item("Earnings"),
                         rx.menu.separator(),
                         rx.menu.item("Log out"),
                     ),
