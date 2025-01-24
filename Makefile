@@ -19,3 +19,6 @@ venv:
 
 run:
 	reflex run --loglevel debug
+
+deploy:
+	@reflex deploy --project 80bb165b-4f29-4aee-b809-2fd194265518

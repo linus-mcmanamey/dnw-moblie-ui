@@ -1,47 +1,56 @@
 import reflex as rx
-from icecream import ic
-from rich import print
-from loguru import logger
-from rich.traceback import install
-from rxconfig import config
-from dnw_moblie_ui.src.sidebar import sidebar
-from dnw_moblie_ui.src.navbar import navbar_user
-from dnw_moblie_ui.pages.about import about
-#development/dnw-moblie-ui/dnw_moblie_ui/src/sidebar.py
-install()
+import openai
+
+openai_client = openai.OpenAI()
+
 
 class State(rx.State):
-    user_id: str
+    """The app state."""
+
+    prompt = ""
+    image_url = ""
+    processing = False
+    complete = False
+
+    def get_image(self):
+        """Get the image from the prompt."""
+        if self.prompt == "":
+            return rx.window_alert("Prompt Empty")
+
+        self.processing, self.complete = True, False
+        yield
+        response = openai_client.images.generate(
+            prompt=self.prompt, n=1, size="1024x1024"
+        )
+        self.image_url = response.data[0].url
+        self.processing, self.complete = False, True
 
 
-def custom():
-    return rx.text("Custom Route")
+def index():
+    return rx.center(
+        rx.vstack(
+            rx.heading("DALL-E", font_size="1.5em"),
+            rx.input(
+                placeholder="Enter a prompt..",
+                on_blur=State.set_prompt,
+                width="25em",
+            ),
+            rx.button(
+                "Generate Image", 
+                on_click=State.get_image,
+                width="25em",
+                loading=State.processing
+            ),
+            rx.cond(
+                State.complete,
+                rx.image(src=State.image_url, width="20em"),
+            ),
+            align="center",
+        ),
+        width="100%",
+        height="100vh",
+    )
 
-
-def index() -> rx.Component:
-    return rx.flex(
-            navbar_user()
-            , rx.vstack(
-                        rx.heading("Welcome to deeds-not-words!", size="9")
-                        , rx.text("Get started byt logging in or creating an account.", size="5")
-                        , rx.color_mode.button(position="center")
-                        , spacing="0"
-                        , justify="left"
-                        , min_height="85vh"),
-    spacing="4",
-    padding="1em",
-    flex_direction=["column", "column"],
-    width="100%")
-        #, sidebar()
-        # , rx.color_mode.button(position="top-right")
-        # , rx.vstack(rx.heading("Welcome to deeds-not-words!", size="9")
-        #         , rx.text("Get started byt logging in or creating an account.", size="5")
-        #         , spacing="5"
-        #         , justify="center"
-        #         , min_height="85vh"))
-
-
-app = rx.App(theme=rx.theme(appearance = "dark", has_background = True, radius = "large", accent_color = "blue", accent_level = 10))
-app.add_page(index, title= "deeds-not-words")
-app.add_page(about)
-app.add_page(custom, route="/custom-route")
+# Add state and page to the app.
+app = rx.App()
+app.add_page(index, title="Reflex:DALL-E")

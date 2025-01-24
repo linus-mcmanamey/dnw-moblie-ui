@@ -1,11 +1,4 @@
-polars
-pydantic
-rich
-icecream
-loguru
-ruff
-pytest
-pydantic[email]
 clickhouse-connect
 reflex
-sqlmodel
+simplepyble==0.9.0
+
