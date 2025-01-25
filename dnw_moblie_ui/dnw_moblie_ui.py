@@ -102,12 +102,12 @@ def index():
             rx.heading("BLE Scanner", font_size="1.5em"),
             
             # Adapter selection
-            rx.foreach(
-                State.adapters,
-                lambda adapter, i: rx.option(
-                    f"{adapter.identifier()} [{adapter.address()}]",
-                    value=str(i),
-                ),
+            rx.select(
+                options=[{"label": f"{i}: {adapter.identifier()} [{adapter.address()}]", "value": str(i)} 
+                        for i, adapter in enumerate(State.adapters)],
+                placeholder="Select adapter...",
+                on_change=State.set_selected_adapter_index,
+                width="25em",
             ),
             
             # Scan button
@@ -126,13 +126,8 @@ def index():
                 len(State.peripherals) > 0,
                 rx.vstack(
                     rx.select(
-                        rx.foreach(
-                            State.peripherals,
-                            lambda p, i: rx.option(
-                                f"{p.identifier()} [{p.address()}]",
-                                value=str(i),
-                            ),
-                        ),
+                        options=[{"label": f"{i}: {p.identifier()} [{p.address()}]", "value": str(i)} 
+                                for i, p in enumerate(State.peripherals)],
                         placeholder="Select device...",
                         on_change=State.set_selected_peripheral_index,
                         width="25em",
