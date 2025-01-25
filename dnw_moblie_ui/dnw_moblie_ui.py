@@ -103,8 +103,10 @@ def index():
             
             # Adapter selection
             rx.select(
-                options=[{"label": f"{i}: {adapter.identifier()} [{adapter.address()}]", "value": str(i)} 
-                        for i, adapter in enumerate(State.adapters)],
+                options=rx.foreach(
+                    State.adapters,
+                    lambda adapter, i: {"label": f"{i}: {adapter.identifier()} [{adapter.address()}]", "value": str(i)}
+                ),
                 placeholder="Select adapter...",
                 on_change=State.set_selected_adapter_index,
                 width="25em",
@@ -126,8 +128,10 @@ def index():
                 len(State.peripherals) > 0,
                 rx.vstack(
                     rx.select(
-                        options=[{"label": f"{i}: {p.identifier()} [{p.address()}]", "value": str(i)} 
-                                for i, p in enumerate(State.peripherals)],
+                        options=rx.foreach(
+                            State.peripherals,
+                            lambda p, i: {"label": f"{i}: {p.identifier()} [{p.address()}]", "value": str(i)}
+                        ),
                         placeholder="Select device...",
                         on_change=State.set_selected_peripheral_index,
                         width="25em",
@@ -165,4 +169,4 @@ def index():
 
 # Add state and page to the app.
 app = rx.App()
-app.add_page(index, title="Reflex:DALL-E")
+app.add_page(index)
